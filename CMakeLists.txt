@@ -10,17 +10,8 @@ set(CMAKE_BUILD_TYPE "RELEASE")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  pcl_ros
+  pcl_catkin
 )
-
-find_package(PCL 1.7 REQUIRED)
-include_directories(${PCL_INCLUDE_DIRS})
-link_directories(${PCL_LIBRARY_DIRS})
-add_definitions(${PCL_DEFINITIONS})
-
-message(STATUS "PCL_INCLUDE_DIRS:" ${PCL_INCLUDE_DIRS})
-message(STATUS "PCL_LIBRARY_DIRS:" ${PCL_LIBRARY_DIRS})
-message(STATUS "PCL_DEFINITIONS:" ${PCL_DEFINITIONS})
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
@@ -34,13 +25,14 @@ endif()
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ndt_omp
+  DEPENDS roscpp pcl_catkin
 )
 
 ###########
 ## Build ##
 ###########
-include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -58,6 +50,5 @@ add_dependencies(align
 )
 target_link_libraries(align
   ${catkin_LIBRARIES}
-  ${PCL_LIBRARIES}
   ndt_omp
 )
